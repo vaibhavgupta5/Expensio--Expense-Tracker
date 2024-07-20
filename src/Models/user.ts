@@ -29,6 +29,7 @@ export interface Wishlist extends Document{
     name: string;
     amount: number;
     createdAt: Date;
+    achieveTill: Date;
 }
 
 
@@ -100,6 +101,10 @@ const wishlistSchema: Schema<Wishlist> = new Schema({
     createdAt:{
         type: Date,
         default: Date.now
+    },
+    achieveTill:{
+        type: Date,
+        required: true
     }
 })
 
