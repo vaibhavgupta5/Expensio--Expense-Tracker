@@ -117,6 +117,7 @@ export interface User extends Document{
     incomeSources: incomeSource[];
     monthlyExpenses: monthlyExpenses[];
     saveTarget: saveTarget[];
+    theme: string;
 }
 
 const userSchema: Schema<User> = new Schema({
@@ -133,6 +134,10 @@ const userSchema: Schema<User> = new Schema({
     password:{
         type: String,
         required: true
+    },
+    theme:{
+        type: String,
+        default: "light"
     },
         wishlist: [wishlistSchema],
         expenses: [expensesSchema],
