@@ -24,7 +24,7 @@ export interface saveTarget extends Document{
     createdAt: Date;
 }
 
-
+//wishlist === trips
 export interface Wishlist extends Document{
     name: string;
     amount: number;
@@ -118,6 +118,7 @@ export interface User extends Document{
     monthlyExpenses: monthlyExpenses[];
     saveTarget: saveTarget[];
     theme: string;
+    provider: string
 }
 
 const userSchema: Schema<User> = new Schema({
@@ -138,6 +139,10 @@ const userSchema: Schema<User> = new Schema({
     theme:{
         type: String,
         default: "light"
+    },
+    provider:{
+        type: String,
+        required: true
     },
         wishlist: [wishlistSchema],
         expenses: [expensesSchema],

@@ -5,7 +5,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -31,6 +30,10 @@ export const authOptions: NextAuthOptions = {
             throw new Error("No User Found");
           }
 
+          if(user.provider === "Google"){
+            throw new Error("Signin Using Google Please");
+          }
+
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password
@@ -54,6 +57,44 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
+
+    async signIn({ user, account, profile }) {
+      await connectDB();
+
+      console.log(profile)
+      console.log(account?.provider)
+
+      if(account?.provider === "google"){
+
+        const user = await UserModel.findOne({email: profile?.email})
+
+        if(!user){
+
+          const newUser = new UserModel({
+          email: profile?.email,
+          username : profile?.name,
+          password: "test",
+          wishlist: [],
+          expenses: [],
+          incomeSources: [],
+          monthlyExpenses: [],
+          saveTarget: [],
+          theme: "light",
+          provider: "google"
+        })
+
+        console.log(newUser)
+
+        try {
+          await newUser.save()
+        } catch (error) {
+          console.error("Error saving user:", error);
+        }
+      }
+      }
+
+      return true
+    },
     // JWT (JSON Web Token):
 
     // Purpose: The JWT is used to securely store user data on the client side. It is issued upon successful authentication and contains claims (pieces of information) about the user.

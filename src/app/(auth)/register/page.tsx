@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { loginSchema } from "@/schemas/loginSchema";
+import { CloudHail, Loader2 } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
-
+import { registerSchema } from "@/schemas/registerSchema";
+import axios from "axios"
+import { apiResponse } from "@/types/apiResponse";
 
 const Login = () => {
   const [isSubmitting, setisSubmitting] = useState(false);
@@ -31,52 +32,47 @@ const Login = () => {
   //zod implementation
 
   const form = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
-      identifier: "",
+      username: "",
+      email: "",
       password: "",
     },
   });
 
   //z.infer to validate from zod
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     setisSubmitting(true);
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      identifier: data.identifier,
-      password: data.password,
-    });
+    try {
+      const result = await axios.post<apiResponse>("/api/register", data)
+      setisSubmitting(false);
 
-    if (result?.error) {
-      console.log("here")
+  
+      toast({
+        title: "Success",
+        description: "You have successfully registered",
+      });
+
+      router.push("/login");
+
+    } catch (error:any) {
       toast({
         title: "SignUp Failed",
-        description: result?.error,
+        description: error?.response?.data.message,
         variant: "destructive",
       });
       setisSubmitting(false);
-      return;
-    }
 
-    router.replace("/info-form");
-    
+        }
 
-    setisSubmitting(false);
-
-    toast({
-      title: "Success",
-      description: "You have successfully signed in",
-    });
   };
 
   return (
     <div className="flex justify-center items-center h-[100vh] flex-col bg-[#0D1117]">
-
-
       <div className="bg-white m-4 p-8  box-stroke-3 z-[20]">
         <div className="text-6xl text-center font-extrabold text-[#0D1117]">
-        ₹EXPENSIO
+          ₹EXPENSIO
         </div>
 
         <hr className="w-full border-[1px] border-[#0D1117] opacity-[0.5] mb-4 mt-4" />
@@ -87,14 +83,31 @@ const Login = () => {
             className="space-y-4 md:w-[50vh] max-md:w-[100%] "
           >
             <FormField
-              name="identifier"
+              name="username"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       className="p-6 w-full text-[16px]"
-                      placeholder="Username/Email..."
+                      placeholder="Username"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="email"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      className="p-6 w-full text-[16px]"
+                      placeholder="Email..."
                       {...field}
                     />
                   </FormControl>
@@ -131,33 +144,35 @@ const Login = () => {
                   Please Wait
                 </>
               ) : (
-                <>LOGIN</>
+                <>REGISTER</>
               )}
             </Button>
           </form>
         </Form>
         <p className="text-center mt-4">
           Do not Have Account?{" "}
-          <Link href="/register" className="font-semibold underline">
-            REGISTER
+          <Link href="/login" className="font-semibold underline">
+            LOGIN
           </Link>{" "}
         </p>
 
         <hr className="w-full border-[1px] border-[#0D1117] opacity-[0.5] mb-4 mt-4" />
-        
-      <Button className="w-full p-8 bg-white border-solid border-2 border-[#0D1117] text-[#0D1117] hover:text-white hover:bg-[#0D1117] text-lg font-semibold transition-all ease-in-out" onClick={(e) => {
-                e.preventDefault();
-                signIn("google");
-                router.push("/info-form")
-              }}>
-                <div className="flex w-full items-center justify-center">
-                <FaGoogle className="mr-2 ml-2"/>
-                Google Login
-                </div>
-                </Button>
+
+        <Button
+          className="w-full p-8 bg-white border-solid border-2 border-[#0D1117] text-[#0D1117] hover:text-white hover:bg-[#0D1117] text-lg font-semibold transition-all ease-in-out"
+          onClick={(e) => {
+            e.preventDefault();
+            signIn("google");
+            router.push("/info-form")
+            console.log(session);
+          }}
+        >
+          <div className="flex w-full items-center justify-center">
+            <FaGoogle className="mr-2 ml-2" />
+            Google Login
+          </div>
+        </Button>
       </div>
-
-
     </div>
   );
 };

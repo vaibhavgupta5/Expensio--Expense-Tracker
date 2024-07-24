@@ -16,6 +16,7 @@ export async function POST(req: NextRequest){
         const userUserName = await UserModel.findOne({username})
 
         if(userEmail){
+            console.log("1")
             return Response.json(
                 {
                     success: false,
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest){
         }
 
         if(userUserName){
+            console.log("2")
             return Response.json(
                 {
                     success: false,
@@ -50,7 +52,8 @@ export async function POST(req: NextRequest){
             incomeSources: [],
             monthlyExpenses: [],
             saveTarget: [],
-            theme: "light"
+            theme: "light",
+            provider: "form"
         })
 
         await newUser.save()
@@ -67,6 +70,7 @@ export async function POST(req: NextRequest){
 
 
     } catch (error) {
+        console.log(error)
         return Response.json(
             {
                 success: false,
