@@ -7,7 +7,6 @@ export interface expenses extends Document{
 }
 
 export interface incomeSource extends Document{
-    incomeSource: string;
     amount : number;
     createdAt: Date;
 }
@@ -49,10 +48,6 @@ const expensesSchema: Schema<expenses> = new Schema({
 })
 
 const incomeSourceSchema: Schema<incomeSource> = new Schema({
-    incomeSource:{
-        type: String,
-        required: true
-    },
     amount:{
         type: Number,
         required: true

@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 export  async function POST(req: NextRequest) {
   await connectDB();
 
-  const { wishlistName, wishlishAmt, wishlistAchieveDate, expenseSource, expenseAmount, saveTarget, username, IncomeAmount, incomeSources } =
+  const { wishlistName, wishlishAmt, wishlistAchieveDate, expenseSource, expenseAmount, saveTarget, username, IncomeAmount } =
     await req.json();
 
   try {
@@ -41,15 +41,14 @@ export  async function POST(req: NextRequest) {
     } as monthlyExpenses)
 
     user.incomeSources.push({
-        incomeSource: incomeSources,
         amount: IncomeAmount,
         createdAt: todayDate,
     } as incomeSource)
 
-    user.saveTarget = {
+    user.saveTarget.push({
         amount: saveTarget,
         createdAt: todayDate,
-    } as saveTarget
+    } as saveTarget)
 
     user.save();
 

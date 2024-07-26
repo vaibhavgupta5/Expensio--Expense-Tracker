@@ -25,7 +25,6 @@ const Login = () => {
   const [isSubmitting, setisSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const [expand, setExpand] = useState(false);
   const session = useSession();
 
   //zod implementation
