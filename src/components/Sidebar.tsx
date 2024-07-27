@@ -1,17 +1,37 @@
 'use client'
-import React from 'react'
-import { FaGithub, FaHome, FaMoneyCheckAlt, FaPlane } from 'react-icons/fa'
+import React, { useState } from 'react'
+import { FaGithub, FaHome, FaMoneyCheckAlt, FaPlane, FaUser } from 'react-icons/fa'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { ImMenu } from "react-icons/im";
 
 
 function Sidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const session = useSession();
+
+  const [expandMenue, setexpandMenue] = useState(false)
 
   return (
-    <div className='w-[20vw] h-[100vh] bg-[#010409]'>
+    <div className={`md:w-[20vw] w-[100vw]  h-[100vh] `}>
 
-        {pathname}
+      <div onClick={() => setexpandMenue(!expandMenue)} className=' md:hidden p-4 bg-[#161B22]  cursor-pointer text-white flex md:justify-center md:items-center justify-start items-start text-4xl '>
+      <ImMenu />
+      </div>
+
+      <div className={`${!expandMenue && "hidden md:flex md:flex-col" } transition-all bg-[#010409]  h-[100%] ease-in-out duration-500`}>
+      <div className='text-white p-4 flex md:justify-center md:items-center justify-start items-start flex-col ' >
+      <Image
+          src="/user.png"
+          width={200}
+          height={200}
+          alt="Picture of the user"
+          className='rounded-full m-4 p-2 mb-2 border-solid border-[2px] border-transparent hover:border-[#30363D] cursor-pointer hover:bg-[#161B22] transition-all ease-in-out duration-300'
+      />
+        <p className='ml-[97px] md:ml-0 font-semibold opacity-[1]'>{session.data?.user.username}</p>
+      </div>
 
       <div className='p-8'>
       <Link href="/dashboard" className={`text-white cursor-pointer p-4 mt-2 font-semibold w-full flex items-center rounded-md text-lg ${pathname === "/dashboard" && "bg-[#161B22]  border-solid border-[1px] border-[#30363D]"} hover:bg-[#161B22] hover:border-solid hover:border-[1px] border-[1px] border-transparent hover:border-[#30363D] transition-all ease-in-out duration-300` }><FaHome className='mr-2' /> Home
@@ -28,6 +48,9 @@ function Sidebar() {
       </Link>
 
       </div>
+
+      </div>
+
     </div>
   )
 }
