@@ -1,11 +1,11 @@
 import { connectDB } from "@/lib/dbConnect";
-import UserModel, { monthlyExpenses } from "@/Models/user";
+import UserModel, { expenses } from "@/Models/user";
 import { NextRequest } from "next/server";
 
 export  async function POST(req: NextRequest) {
   await connectDB();
 
-  const { username, expenseSource, expenseAmount } = await req.json();
+  const { username, amount, title } = await req.json();
 
   try {
     const user = await UserModel.findOne({ username });
@@ -23,25 +23,25 @@ export  async function POST(req: NextRequest) {
 
     const todayDate = new Date()
 
-    user.monthlyExpenses.push({
-        expenseSource,
-        amount: expenseAmount,
+    user.expenses.push({
+        title: title,
+        amount: amount,
         createdAt: todayDate,
-    } as monthlyExpenses)
-    
-    user.save()
+    } as expenses)
+
+    await user.save()
 
     return Response.json(
-      {
-        message: "Sucess",
-        success: true,
-      },
-      {
-        status: 200,
-      }
-    ); 
-
-
+        {
+          message: "Success Updated",
+          success: true,
+        },
+        {
+          status: 200,
+        }
+      )
+    
+    
 } catch (error) {
 
     

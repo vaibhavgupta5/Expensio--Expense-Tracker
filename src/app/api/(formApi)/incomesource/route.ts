@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 export  async function POST(req: NextRequest) {
   await connectDB();
 
-  const { username, IncomeAmount, incomeSources } = await req.json();
+  const { username, IncomeAmount } = await req.json();
 
   try {
     const user = await UserModel.findOne({ username });
@@ -24,7 +24,6 @@ export  async function POST(req: NextRequest) {
     const todayDate = new Date()
 
     user.incomeSources.push({
-        incomeSource: incomeSources,
         amount: IncomeAmount,
         createdAt: todayDate,
     } as incomeSource)

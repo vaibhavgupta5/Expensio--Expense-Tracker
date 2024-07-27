@@ -32,6 +32,18 @@ export  async function POST(req: NextRequest) {
 
     // bina schema define kre dikal krega
     user.wishlist.push(wishlist as Wishlist)
+
+    user.save();
+
+    return Response.json(
+      {
+        message: "Success",
+        success: true,
+      },
+      {
+        status: 200,
+      }
+    )
     
 } catch (error) {
 
