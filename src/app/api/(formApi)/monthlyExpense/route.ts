@@ -23,6 +23,10 @@ export  async function POST(req: NextRequest) {
 
     const todayDate = new Date()
 
+    const income = user.incomeSources[0].amount;
+
+    user.incomeSources[0].amount = income - expenseAmount
+
     user.monthlyExpenses.push({
         expenseSource,
         amount: expenseAmount,

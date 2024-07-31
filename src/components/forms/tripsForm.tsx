@@ -10,10 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
@@ -22,11 +18,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { FaPiggyBank, FaPlaneDeparture, FaRupeeSign } from "react-icons/fa";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+
 function TripForm() {
   const session = useSession();
   const [open, setOpen] = useState(false);
@@ -66,7 +58,7 @@ function TripForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#0D1117] hover:bg-[#010409] h-full w-[25%] rounded-md border-solid border-[1px] border-[#30363D] flex justify-center items-center text-white cursor-pointer  font-semibold">
+        <Button className="bg-transparent hover:bg-transparent h-full w-[100%]  flex justify-center items-center text-white cursor-pointer  font-semibold">
           <FaPlaneDeparture className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
           <p>+ New Trip</p>
         </Button>

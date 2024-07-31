@@ -56,7 +56,7 @@ function RecurringForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#0D1117] hover:bg-[#010409] h-full w-[25%] rounded-md border-solid border-[1px] border-[#30363D] flex justify-center items-center text-white cursor-pointer  font-semibold">
+        <Button className="bg-transparent hover:bg-transparent h-full w-[100%]  flex justify-center items-center text-white cursor-pointer  font-semibold">
         <GiExpense className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
         <p>+ New Recurring Expense</p>
         </Button>

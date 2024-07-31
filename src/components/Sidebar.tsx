@@ -28,7 +28,7 @@ function Sidebar() {
           width={200}
           height={200}
           alt="Picture of the user"
-          className='rounded-full m-4 p-2 mb-2 border-solid border-[2px] border-transparent hover:border-[#30363D] cursor-pointer hover:bg-[#161B22] transition-all ease-in-out duration-300'
+          className='rounded-full m-4 p-2 mb-2 border-solid border-[2px] border-transparent border-[#30363D] cursor-pointer bg-[#161B22] transition-all ease-in-out duration-300'
       />
         <p className='ml-[97px] md:ml-0 font-semibold opacity-[1]'>{session.data?.user.username}</p>
       </div>

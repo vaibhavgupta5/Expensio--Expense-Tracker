@@ -3,42 +3,106 @@ import ExpenseForm from "@/components/forms/expenseForm";
 import RecurringForm from "@/components/forms/recurringForm";
 import TripForm from "@/components/forms/tripsForm";
 import Sidebar from "@/components/Sidebar";
-import { Button } from "@/components/ui/button";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
-import { apiResponse } from "@/types/apiResponse";
 import axios from "axios";
-import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaPiggyBank, FaPlaneDeparture, FaRupeeSign } from "react-icons/fa";
-import { GiExpense } from "react-icons/gi";
+import { DataTable } from "../expenses/data-table";
+import { DataTable as Table2 } from "../trips/data-table";
+import { columns } from "../expenses/columns";
+import { columns as col2}  from "../trips/columns";
+
+
+
 
 function Dashboard() {
+
+
+
+  const [income, setIncome] = useState("");
+  const [data, setData] = useState([]);
+  const [data2, setData2] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getIncome = useCallback(
+    async (refresh: boolean = false) => {
+      setLoading(true)    
+    try {
+      const resultExpense = await axios.get("/api/expense")
+
+      console.log(resultExpense.data.income)
+      setIncome(resultExpense.data.income[0].amount)
+      
+      const newArr:any = resultExpense.data.data.filter((_:any, index:number) => index<3)
+
+      const newArr2:any = resultExpense.data.trips.filter((_:any, index:number) => index<2)
+
+      setData(newArr)
+      setData2(newArr2)
+
+    } catch (error:any) {
+      toast({
+        title: error?.message,
+        description: "Please check back later",
+        variant: "destructive",
+      })
+     
+  } finally{
+    setLoading(false)
+  }
+},
+    [setData, setData2, setIncome]
+)
+
+const handleSubmit = async (e:any) => {
+  e.preventDefault()
+ 
+
+  setTimeout(() => {
+    if(loading === false){
+      console.log("first ok")
+      getIncome();
+  }
+  }, 700);
+  
+}
+
+  useEffect(() => {
+
+    getIncome();
+  
+  }, [toast])
+
   return (
     <div className="flex h-full w-full bg-[#0D1117] ">
-      <Sidebar />
+       <div className='fixed z-10 '><Sidebar /></div>
 
-      <div className="p-8 h-[100vh] w-full flex flex-col">
+      <div className="p-8 h-[100vh] w-full flex flex-col md:ml-[20vw] mt-12 md:mt-0">
         <div className="w-[100%] flex h-[40%] m-2 ml-0">
-          <div className="w-[60%] h-full m-2 bg-[#161B22] rounded-md flex justify-start items-start  border-solid border-[1px] border-[#30363D]">
+
+          <div className="w-[60%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
             <p className="border-solid border-b-[1px] h-[18%] border-[#30363D] p-2 pl-4 w-full text-white font-bold">
               Latest Expenses
             </p>
+
+            <div className=" p-2 w-full">
+            <DataTable columns={columns} data={data} />
           </div>
 
-          <div className="w-[40%] h-full m-2 bg-[#161B22] rounded-md flex justify-start items-start  border-solid border-[1px] border-[#30363D]"></div>
+          </div>
+
+          <div className="w-[40%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
+
+          <p className="border-solid border-b-[1px] h-[18%] border-[#30363D] p-2 pl-4 w-full text-white font-bold">
+              Recent Planned Trips
+            </p>
+
+            <div className=" p-2 w-full ">
+            < Table2 columns={col2} data={data2} />
+          </div>
+
+
+          </div>
         </div>
 
         <div className="w-[100%] flex h-[20%] m-2 ml-0">
@@ -47,16 +111,17 @@ function Dashboard() {
               Quick Access
             </p>
 
-            <div className="flex justify-evenly h-[70%] p-2 w-full items-center">
-              <ExpenseForm />
+            <div className="flex justify-evenly h-[70%] p-2 w-full items-center ">
+              <div onSubmit={(e:any) => handleSubmit(e)}   className="bg-[#0D1117] h-full w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"><ExpenseForm /></div>
+              
 
-              <TripForm />
+              <div onSubmit={(e:any) => handleSubmit(e)}  className="bg-[#0D1117] h-full w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2">  <TripForm /></div>
 
-              <RecurringForm/>
+              <div onSubmit={(e:any) => handleSubmit(e)} className="bg-[#0D1117] h-full w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"> <RecurringForm  /></div>
 
-              <div className="bg-[#0D1117] hover:bg-[#010409] h-full w-[25%] rounded-md border-solid border-[1px] border-[#30363D] flex justify-center items-center text-white cursor-pointer font-semibold">
+              <div className="bg-[#0D1117] hover:bg-[#010409] h-full w-[25%] rounded-md border-solid border-[1px] border-[#30363D] m-2 flex justify-center items-center text-white cursor-pointer font-semibold" >
                 <FaPiggyBank className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
-                <p> Balance : Rs.126565</p>
+                <p> Balance{" "} : ₹{income}</p>
               </div>
             </div>
           </div>
@@ -73,3 +138,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
