@@ -21,18 +21,18 @@ import axios from "axios";
 
 const chartConfig = {
   amount: {
-    label: "Amount",
-    color: "white",
+    label: "",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
-export function ExpenseGraph() {
+export function TripGraph() {
   const [chartData, setChartData] = React.useState([]);
 
   React.useEffect(() => {
-    async function fetchExpense() {
+    async function fetchTrips() {
       try {
-        const result = await axios.get("/api/expense");
+        const result = await axios.get("/api/wishlist");
 
         const data = result.data.data.map((item: any) => ({
           date: new Date(item.createdAt).toLocaleDateString("en-US"),
@@ -41,11 +41,11 @@ export function ExpenseGraph() {
 
         setChartData(data.reverse());
       } catch (error) {
-        console.error("Error fetching expense data:", error);
+        console.error("Error fetching trips data:", error);
       }
     }
 
-    fetchExpense();
+    fetchTrips();
   }, []);
 
   return (
