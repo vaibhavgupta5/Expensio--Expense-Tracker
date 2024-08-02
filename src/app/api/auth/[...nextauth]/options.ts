@@ -95,6 +95,8 @@ export const authOptions: NextAuthOptions = {
 
       return true
     },
+
+
     // JWT (JSON Web Token):
 
     // Purpose: The JWT is used to securely store user data on the client side. It is issued upon successful authentication and contains claims (pieces of information) about the user.

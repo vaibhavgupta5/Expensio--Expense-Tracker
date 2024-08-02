@@ -35,7 +35,7 @@ export function DataTable<TData, TValue>({
   const pathname = usePathname();
 
   return (
-    <div className="rounded-md border-solid border-[1px] border-[#30363D] text-white">
+    <div className="rounded-md border-solid border-[1px] border-[#30363D] text-white w-full">
       <Table className="rounded-md border-solid border-[1px] border-[#30363D] text-white">
         <TableHeader className={`bg-[#010409] text-white hover:bg-[#010409] ${pathname === "/dashboard" ? "h-[4vh]" : "h-[10vh]"}`}> 
           {table.getHeaderGroups().map((headerGroup) => (
@@ -95,7 +95,7 @@ export function DataTableMonthly<TData, TValue>({
   })
 
   return (
-    <div className="rounded-md border-solid border-[1px] border-[#30363D] text-white">
+    <div className="rounded-md border-solid border-[1px] border-[#30363D] text-white w-full">
       <Table className="rounded-md border-solid border-[1px] border-[#30363D] text-white">
         <TableHeader className="bg-[#010409] text-white hover:bg-[#010409] h-[10vh]"> 
           {table.getHeaderGroups().map((headerGroup) => (

@@ -35,7 +35,7 @@ function Dashboard() {
         );
 
         const newArr2: any = resultExpense.data.trips.filter(
-          (_: any, index: number) => index < 2
+          (_: any, index: number) => index < 3
         );
 
         setData(newArr);
@@ -96,9 +96,9 @@ function Dashboard() {
            <p className="text-white w-full"> Loading</p>
         </div>
       ) : (
-        <div className="p-8 h-[100vh] w-full flex flex-col md:ml-[20vw] mt-12 md:mt-0">
-          <div className="w-[100%] flex h-[40%] m-2 ml-0">
-            <div className="w-[60%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
+        <div className="p-8 h-full md:h-[100vh] w-full flex flex-col md:ml-[20vw] mt-12 md:mt-0">
+          <div className="w-[100%] flex flex-col md:flex-row h-[40%] m-2 ml-0">
+            <div className="md:w-[60%] w-full h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
               <p className="border-solid border-b-[1px] h-[18%] border-[#30363D] p-2 pl-4 w-full text-white font-bold">
                 Latest Expenses
               </p>
@@ -108,7 +108,7 @@ function Dashboard() {
               </div>
             </div>
 
-            <div className="w-[40%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
+            <div className="w-full md:w-[40%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
               <p className="border-solid border-b-[1px] h-[18%] border-[#30363D] p-2 pl-4 w-full text-white font-bold">
                 Recent Planned Trips
               </p>
@@ -118,23 +118,23 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="w-[100%] flex h-[20%] m-2 ml-0">
+          <div className="w-[100%] flex h-[25%] md:h-[20%] m-2 md:ml-0">
             <div className="w-[100%] h-full m-2 bg-[#161B22] rounded-md flex justify-start items-start  border-solid border-[1px] border-[#30363D] flex-col ">
               <p className="border-solid border-b-[1px] h-[30%] border-[#30363D] p-2 pl-4 w-full flex items-center text-white font-bold">
                 Quick Access
               </p>
 
-              <div className="flex justify-evenly h-[70%] p-2 w-full items-center ">
+              <div className="flex flex-col md:flex-row justify-evenly h-[70%] p-2 w-full items-center ">
                 <div
                   onSubmit={(e: any) => handleSubmit(e)}
-                  className="bg-[#0D1117] h-full w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
+                  className="bg-[#0D1117] h-full w-full md:w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
                 >
                   <ExpenseForm />
                 </div>
 
                 <div
                   onSubmit={(e: any) => handleSubmit(e)}
-                  className="bg-[#0D1117] h-full w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
+                  className="bg-[#0D1117] h-full w-full md:w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
                 >
                   {" "}
                   <TripForm />
@@ -142,28 +142,28 @@ function Dashboard() {
 
                 <div
                   onSubmit={(e: any) => handleSubmit(e)}
-                  className="bg-[#0D1117] h-full w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
+                  className="bg-[#0D1117] h-full w-full md:w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
                 >
                   {" "}
                   <RecurringForm />
                 </div>
 
-                <div className="bg-[#0D1117] hover:bg-[#010409] h-full w-[25%] rounded-md border-solid border-[1px] border-[#30363D] m-2 flex justify-center items-center text-white cursor-pointer font-semibold">
+                <div className="bg-[#0D1117] hover:bg-[#010409] h-full w-full md:w-[25%] rounded-md border-solid border-[1px] border-[#30363D] m-2 flex justify-center items-center text-white cursor-pointer font-semibold">
                   <FaPiggyBank className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
                   <p> Balance : ₹{income}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="w-[100%] flex h-[40%] m-2 ml-0">
-            <div className="w-[50%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
+          <div className="w-[100%] flex flex-col md:flex-row h-[40%] m-2 ml-0">
+            <div className="w-full md:w-[50%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
               <p className="border-solid border-b-[1px] h-[18%] border-[#30363D] p-2 pl-4 w-full text-white font-bold">
                 Expense Visualizer
               </p>
               <ExpenseGraph />
             </div>
 
-            <div className="w-[50%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
+            <div className="w-full md:w-[50%] h-full m-2 bg-[#161B22] rounded-md flex flex-col justify-start items-start  border-solid border-[1px] border-[#30363D]">
               <p className="border-solid border-b-[1px] h-[18%] border-[#30363D] p-2 pl-4 w-full text-white font-bold">
                 Trip Expense Visualizer
               </p>

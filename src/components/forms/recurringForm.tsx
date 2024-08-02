@@ -16,12 +16,14 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { apiResponse } from "@/types/apiResponse";
 import axios from "axios";
+import { LoaderCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { GiExpense } from "react-icons/gi";
 function RecurringForm() {
   const session = useSession();
   const [open, setOpen] = useState(false);
+  const [isFetching, setisFetching] = useState(false);
 
   const onSubmitExpense = async (e: any) => {
     e.preventDefault();
@@ -37,6 +39,8 @@ function RecurringForm() {
     };
 
     try {
+      setisFetching(true);
+
       const result = await axios.post<apiResponse>("/api/monthlyExpense", data);
 
       toast({
@@ -45,11 +49,15 @@ function RecurringForm() {
       });
       setOpen(false);
     } catch (error) {
+      setisFetching(true);
+
       toast({
         title: "Failed",
         description: "Please try again!",
         variant: "destructive",
       });
+    } finally {
+      setisFetching(false);
     }
   };
 
@@ -57,22 +65,23 @@ function RecurringForm() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-transparent hover:bg-transparent h-full w-[100%]  flex justify-center items-center text-white cursor-pointer  font-semibold">
-        <GiExpense className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
-        <p>+ New Recurring Expense</p>
+          <GiExpense className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
+          <p>+ New Recurring Expense</p>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>New Monthly Expense</DialogTitle>
           <DialogDescription>
-            Add your new recurring monthly expense here. Click save when youre done.
+            Add your new recurring monthly expense here. Click save when youre
+            done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={(e) => onSubmitExpense(e)}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="expenseSource" className="text-right">
-              Source
+                Source
               </Label>
               <Input
                 id="expenseSource"
@@ -94,7 +103,8 @@ function RecurringForm() {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex items-center">
+            {isFetching && <LoaderCircle className="animate-spin" />}
             <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>

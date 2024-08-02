@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import { LoaderCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
@@ -18,11 +18,15 @@ import { apiResponse } from "@/types/apiResponse";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
-import { FaPiggyBank, FaPlaneDeparture, FaRupeeSign } from "react-icons/fa";
-import { GiExpense } from "react-icons/gi";
+import { FaRupeeSign } from "react-icons/fa";
+
+
+
+
 function ExpenseForm() {
   const session = useSession();
   const [open, setOpen] = useState(false);
+  const [isFetching, setisFetching] = useState(false);
 
   const onSubmitExpense = async (e: any) => {
     e.preventDefault();
@@ -38,6 +42,8 @@ function ExpenseForm() {
     };
 
     try {
+      setisFetching(true);
+
       const result = await axios.post<apiResponse>("/api/expense", data);
 
       toast({
@@ -46,11 +52,14 @@ function ExpenseForm() {
       });
       setOpen(false);
     } catch (error) {
+      setisFetching(true);
       toast({
         title: "Failed",
         description: "Please try again!",
         variant: "destructive",
       });
+    } finally {
+      setisFetching(false);
     }
   };
 
@@ -95,7 +104,8 @@ function ExpenseForm() {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex items-center">
+            {isFetching && <LoaderCircle className="animate-spin" />}
             <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>

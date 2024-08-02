@@ -11,6 +11,14 @@ export type Expense = {
   createdAt: string
 }
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 export const columns: ColumnDef<Expense>[] = [
     {
         accessorKey: "_id",
@@ -27,6 +35,7 @@ export const columns: ColumnDef<Expense>[] = [
   {
     accessorKey: "createdAt",
     header: "Date",
+    cell: ({ getValue }) => formatDate(getValue<string>()),
   },
 ]
 
@@ -54,5 +63,6 @@ export const columnsMonthly: ColumnDef<MonthlyExpense>[] = [
   {
     accessorKey: "createdAt",
     header: "Date",
+    cell: ({ getValue }) => formatDate(getValue<string>()),
   },
 ]

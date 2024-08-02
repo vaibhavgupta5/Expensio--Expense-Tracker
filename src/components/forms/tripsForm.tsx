@@ -13,8 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
+import { wishListSchema } from "@/schemas/wishlistSchema";
 import { apiResponse } from "@/types/apiResponse";
 import axios from "axios";
+import { LoaderCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { FaPiggyBank, FaPlaneDeparture, FaRupeeSign } from "react-icons/fa";
@@ -22,6 +24,7 @@ import { FaPiggyBank, FaPlaneDeparture, FaRupeeSign } from "react-icons/fa";
 function TripForm() {
   const session = useSession();
   const [open, setOpen] = useState(false);
+  const [isFetching, setisFetching] = useState(false);
 
   const onSubmitTrip = async (e: any) => {
     e.preventDefault();
@@ -38,7 +41,10 @@ function TripForm() {
       wishlistAchieveDate,
     };
 
+
     try {
+      setisFetching(true);
+
       const result = await axios.post<apiResponse>("/api/wishlist", data);
 
       toast({
@@ -47,11 +53,14 @@ function TripForm() {
       });
       setOpen(false);
     } catch (error) {
+      setisFetching(true);
       toast({
         title: "Failed",
         description: "Please try again!",
         variant: "destructive",
       });
+    } finally {
+      setisFetching(false);
     }
   };
 
@@ -94,23 +103,24 @@ function TripForm() {
                 required={true}
                 className="col-span-3"
               />
-              </div>
+            </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="wishlistAchieveDate" className="text-right">
-                  Date?
-                </Label>
-                <Input
-                  id="wishlistAchieveDate"
-                  type="date"
-                  placeholder="30/02/26"
-                  required={true}
-                  className="col-span-3"
-                />
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="wishlistAchieveDate" className="text-right">
+                Date?
+              </Label>
+              <Input
+                id="wishlistAchieveDate"
+                type="date"
+                placeholder="30/02/26"
+                required={true}
+                className="col-span-3"
+              />
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex items-center">
+            {isFetching && <LoaderCircle className="animate-spin" />}
             <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>
