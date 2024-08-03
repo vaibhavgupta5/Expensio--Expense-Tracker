@@ -31,12 +31,11 @@ function ExpenseForm() {
   const onSubmitExpense = async (e: any) => {
     e.preventDefault();
 
-    const username = session.data?.user.username;
     const amount = e.target[1].value;
     const title = e.target[0].value;
 
     const data: any = {
-      username,
+      username: session.data?.user?.image ? session.data?.user.name : session.data?.user.username,
       title,
       amount,
     };

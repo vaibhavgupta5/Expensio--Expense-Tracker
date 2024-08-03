@@ -47,10 +47,32 @@ export async function POST(req: NextRequest){
             email,
             username,
             password: hashedPassword,
-            wishlist: [],
-            expenses: [],
-            incomeSources: [],
-            monthlyExpenses: [],
+            wishlist: [
+                {
+                    amount: 0,
+                    name: "Demo Trip",
+                    createdAt: Date.now(),
+                    achieveTill: Date.now()
+                  }
+            ],
+            expenses: [  {
+                amount: 0,
+                title: "Demo Expense",
+                createdAt: Date.now(),
+              }],
+            incomeSources: [
+                {
+                    amount: 50000,
+                    createdAt: Date.now()
+                }
+            ],
+            monthlyExpenses: [
+                {
+                    amount: 0,
+                    expenseSource: "Demo Rent",
+                    createdAt: Date.now(),
+                  }
+            ],
             saveTarget: [],
             theme: "light",
             provider: "form"

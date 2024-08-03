@@ -29,13 +29,12 @@ function TripForm() {
   const onSubmitTrip = async (e: any) => {
     e.preventDefault();
 
-    const username = session.data?.user.username;
     const wishlishAmt = e.target[1].value;
     const wishlistName = e.target[0].value;
     const wishlistAchieveDate = e.target[2].value;
 
     const data: any = {
-      username,
+      username: session.data?.user?.image ? session.data?.user.name : session.data?.user.username,
       wishlistName,
       wishlishAmt,
       wishlistAchieveDate,

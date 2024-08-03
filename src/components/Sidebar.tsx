@@ -26,6 +26,8 @@ function Sidebar() {
 
   const [expandMenue, setexpandMenue] = useState(false);
 
+  
+
 
   const onSignOut = async (e: any) => {
     e.preventDefault();
@@ -60,7 +62,7 @@ function Sidebar() {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <p className="ml-[97px] md:ml-0 font-semibold opacity-[1]">
-                {session.data?.user.username}
+                {session.data?.user?.image ? session.data?.user.name : session.data?.user.username}
               </p>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

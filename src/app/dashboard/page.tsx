@@ -6,7 +6,6 @@ import Sidebar from "@/components/Sidebar";
 import { toast } from "@/components/ui/use-toast";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import { FaPiggyBank, FaPlaneDeparture, FaRupeeSign } from "react-icons/fa";
 import { DataTable } from "../expenses/data-table";
 import { DataTable as Table2 } from "../trips/data-table";
 import { columns } from "../expenses/columns";
@@ -14,20 +13,22 @@ import { columns as col2 } from "../trips/columns";
 import { ExpenseGraph } from "@/components/graphs/expenseGraph";
 import { TripGraph } from "@/components/graphs/tripGraph";
 import Image from "next/image";
+import IncomeForm from "@/components/forms/incomeForm";
+import { useRouter } from "next/navigation";
 
 function Dashboard() {
   const [income, setIncome] = useState("");
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   const getIncome = useCallback(
     async (refresh: boolean = false) => {
       setLoading(true);
       try {
         const resultExpense = await axios.get("/api/expense");
-
-        console.log(resultExpense.data.income);
+        
         setIncome(resultExpense.data.income[0].amount);
 
         const newArr: any = resultExpense.data.data.filter(
@@ -46,6 +47,7 @@ function Dashboard() {
           description: "Please check back later",
           variant: "destructive",
         });
+        router.push("/login");
       } finally {
         setLoading(false);
       }
@@ -148,10 +150,12 @@ function Dashboard() {
                   <RecurringForm />
                 </div>
 
-                <div className="bg-[#0D1117] hover:bg-[#010409] h-full w-full md:w-[25%] rounded-md border-solid border-[1px] border-[#30363D] m-2 flex justify-center items-center text-white cursor-pointer font-semibold">
-                  <FaPiggyBank className="bg-[#161B22] p-2 text-4xl rounded-full mr-2" />
-                  <p> Balance : ₹{income}</p>
-                </div>
+
+                <div
+                  onSubmit={(e: any) => handleSubmit(e)}
+                  className="bg-[#0D1117] h-full w-full md:w-[25%] hover:bg-[#010409] border-solid border-[1px] border-[#30363D]  rounded-md m-2"
+                >
+                <IncomeForm income = {income}/></div>
               </div>
             </div>
           </div>

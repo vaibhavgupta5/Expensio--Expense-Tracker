@@ -7,7 +7,7 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 export  async function POST(req: NextRequest) {
   await connectDB();
 
-  const { username, IncomeAmount } = await req.json();
+  const { username, amount } = await req.json();
 
   try {
     const user = await UserModel.findOne({ username });
@@ -25,11 +25,8 @@ export  async function POST(req: NextRequest) {
 
     const todayDate = new Date()
 
-    user.incomeSources.push({
-        amount: IncomeAmount,
-        createdAt: todayDate,
-    } as incomeSource)
-
+    user.incomeSources[0].amount = amount;
+    user.incomeSources[0].createdAt = todayDate;
     await user.save()
 
     return Response.json(
@@ -64,7 +61,7 @@ export async function GET(req: NextRequest){
   const session = await getServerSession(authOptions)
 
   const user : User= session?.user;
-  const username :any = user.username
+  const username :any = user.username || user.name
 
 
   if(!user){

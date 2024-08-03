@@ -25,7 +25,7 @@ const Login = () => {
   const [isSubmitting, setisSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const session = useSession();
+  const [expand, setExpand] = useState(false);
 
   //zod implementation
 
@@ -58,7 +58,7 @@ const Login = () => {
       return;
     }
 
-    router.replace("/info-form");
+    router.replace("/dashboard");
     
 
     setisSubmitting(false);
@@ -147,7 +147,7 @@ const Login = () => {
       <Button className="w-full p-8 bg-white border-solid border-2 border-[#0D1117] text-[#0D1117] hover:text-white hover:bg-[#0D1117] text-lg font-semibold transition-all ease-in-out" onClick={(e) => {
                 e.preventDefault();
                 signIn("google");
-                router.push("/info-form")
+                router.push("/dashboard")
               }}>
                 <div className="flex w-full items-center justify-center">
                 <FaGoogle className="mr-2 ml-2"/>
@@ -156,6 +156,14 @@ const Login = () => {
                 </Button>
       </div>
 
+      <div className="bg-white m-4 p-8 flex justify-between items-center box-stroke-3 w-full z-[20] md:w-[28%]" onClick={()=> {expand ? setExpand(false): setExpand(true)}}>
+      <p>Check Dummy Login Data </p>
+      <p>{expand ? "▶":"▼"}</p>
+      {expand && <p>
+        <strong>Username : </strong>Vaibhav<br/>
+        <strong>Password :</strong> 12345678 
+      </p>}
+        </div>
 
     </div>
   );

@@ -163,7 +163,7 @@ const Login = () => {
           onClick={(e) => {
             e.preventDefault();
             signIn("google");
-            router.push("/info-form")
+            router.push("/dashboard")
             console.log(session);
           }}
         >

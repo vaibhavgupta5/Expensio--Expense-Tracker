@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error("No User Found");
           }
 
-          if(user.provider === "Google"){
+          if (user.provider === "Google") {
             throw new Error("Signin Using Google Please");
           }
 
@@ -51,51 +51,71 @@ export const authOptions: NextAuthOptions = {
     }),
 
     GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID as string,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-      })
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
 
   callbacks: {
-
     async signIn({ user, account, profile }) {
       await connectDB();
 
-      console.log(profile)
-      console.log(account?.provider)
+      console.log(profile);
+      console.log(account?.provider);
 
-      if(account?.provider === "google"){
+      if (account?.provider === "google") {
+        const user = await UserModel.findOne({ email: profile?.email });
 
-        const user = await UserModel.findOne({email: profile?.email})
-
-        if(!user){
-
+        if (!user) {
           const newUser = new UserModel({
-          email: profile?.email,
-          username : profile?.name,
-          password: "test",
-          wishlist: [],
-          expenses: [],
-          incomeSources: [],
-          monthlyExpenses: [],
-          saveTarget: [],
-          theme: "light",
-          provider: "google"
-        })
+            email: profile?.email,
+            username: profile?.name,
+            password: "test",
+            wishlist: [
+              {
+                amount: 0,
+                name: "Demo Trip",
+                createdAt: Date.now(),
+                achieveTill: Date.now()
+              }
+       ],
+            expenses: [
+              {
+                amount: 0,
+                title: "Demo Expense",
+                createdAt: Date.now(),
+              }
+            ],
+            incomeSources: [
+              {
+                amount: 50000,
+                createdAt: Date.now(),
+              },
+            ],
+            monthlyExpenses: [
+              {
+                amount: 0,
+                expenseSource: "Demo Rent",
+                createdAt: Date.now(),
+              }
+            ],
+            saveTarget: [],
+            theme: "light",
+            provider: "google",
+          });
 
-        console.log(newUser)
+          console.log(newUser);
 
-        try {
-          await newUser.save()
-        } catch (error) {
-          console.error("Error saving user:", error);
+          try {
+            await newUser.save();
+          } catch (error) {
+            console.error("Error saving user:", error);
+          }
         }
       }
-      }
 
-      return true
+      return true;
     },
-
 
     // JWT (JSON Web Token):
 
@@ -113,6 +133,7 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username;
         session.user.email = token.email;
         session.user.theme = token?.theme;
+        session.user.provider = token?.provider;
       }
       return session;
     },
@@ -122,14 +143,15 @@ export const authOptions: NextAuthOptions = {
         token.username = user.username;
         token.email = user.email;
         token.theme = user?.theme;
+        token.provider = user?.provider;
       }
       return token;
     },
   },
 
-  pages:{
-    signIn: '/login',
-    signOut: '/logout',
+  pages: {
+    signIn: "/login",
+    signOut: "/logout",
   },
 
   session: {
@@ -138,5 +160,4 @@ export const authOptions: NextAuthOptions = {
   },
 
   secret: process.env.NEXT_AUTH_SECRET,
-
 };

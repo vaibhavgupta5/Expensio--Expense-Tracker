@@ -75,7 +75,7 @@ export async function GET(req:NextRequest){
   const session = await getServerSession(authOptions)
 
   const user : User= session?.user;
-  const username :any = user.username
+  const username :any = user.username || user.name
 
 
   if(!user){
