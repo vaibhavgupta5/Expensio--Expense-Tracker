@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
     token &&
     (url.pathname.startsWith("/login") ||
       url.pathname.startsWith("/register") ||
-      url.pathname.startsWith("/info-form") ||
       url.pathname === "/")
   ) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -33,5 +32,5 @@ export async function middleware(request: NextRequest) {
  
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/dasboard','/expenses','/trips','/register','/login','/','/info-form']
+  matcher: ['/dasboard','/expenses','/trips','/register','/login','/']
 }
