@@ -25,9 +25,9 @@ export const authOptions: NextAuthOptions = {
           throw new Error("No user found");
         }
 
-        if (user.provider === "google") {
-          throw new Error("Please sign in using Google");
-        }
+        // if (user.provider === "google") {
+        //   throw new Error("Please sign in using Google");
+        // }
 
         const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
 
