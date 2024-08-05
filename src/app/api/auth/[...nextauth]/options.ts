@@ -8,7 +8,6 @@ import GoogleProvider from "next-auth/providers/google";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      // bade C wala that we want to show user and .. chote c wala is what we want to hide ""
       name: "Credentials",
       id: "credentials",
       credentials: {
@@ -30,8 +29,8 @@ export const authOptions: NextAuthOptions = {
             throw new Error("No User Found");
           }
 
-          if (user.provider === "Google") {
-            throw new Error("Signin Using Google Please");
+          if (user.provider === "google") {
+            throw new Error("Please sign in using Google");
           }
 
           const isPasswordCorrect = await bcrypt.compare(
@@ -45,6 +44,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Invalid Password");
           }
         } catch (error) {
+          console.error("Error during authentication:", error);
           throw new Error("Authentication Failed");
         }
       },
@@ -60,83 +60,72 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       await connectDB();
 
-      console.log(profile);
-      console.log(account?.provider);
-
       if (account?.provider === "google") {
-        const user = await UserModel.findOne({ email: profile?.email });
+        try {
+          const existingUser = await UserModel.findOne({ email: profile?.email });
 
-        if (!user) {
-          const newUser = new UserModel({
-            email: profile?.email,
-            username: profile?.name,
-            password: "test",
-            wishlist: [
-              {
-                amount: 0,
-                name: "Demo Trip",
-                createdAt: Date.now(),
-                achieveTill: Date.now()
-              }
-       ],
-            expenses: [
-              {
-                amount: 0,
-                title: "Demo Expense",
-                createdAt: Date.now(),
-              }
-            ],
-            incomeSources: [
-              {
-                amount: 50000,
-                createdAt: Date.now(),
-              },
-            ],
-            monthlyExpenses: [
-              {
-                amount: 0,
-                expenseSource: "Demo Rent",
-                createdAt: Date.now(),
-              }
-            ],
-            saveTarget: [],
-            theme: "light",
-            provider: "google",
-          });
+          if (!existingUser) {
+            const newUser = new UserModel({
+              email: profile?.email,
+              username: profile?.name,
+              password: "test", // This should be handled securely
+              wishlist: [
+                {
+                  amount: 0,
+                  name: "Demo Trip",
+                  createdAt: Date.now(),
+                  achieveTill: Date.now(),
+                },
+              ],
+              expenses: [
+                {
+                  amount: 0,
+                  title: "Demo Expense",
+                  createdAt: Date.now(),
+                },
+              ],
+              incomeSources: [
+                {
+                  amount: 50000,
+                  createdAt: Date.now(),
+                },
+              ],
+              monthlyExpenses: [
+                {
+                  amount: 0,
+                  expenseSource: "Demo Rent",
+                  createdAt: Date.now(),
+                },
+              ],
+              saveTarget: [],
+              theme: "light",
+              provider: "google",
+            });
 
-          console.log(newUser);
-
-          try {
             await newUser.save();
-          } catch (error) {
-            console.error("Error saving user:", error);
           }
+        } catch (error) {
+          console.error("Error saving user:", error);
+          return false;
         }
       }
 
       return true;
     },
 
-    // JWT (JSON Web Token):
-
-    // Purpose: The JWT is used to securely store user data on the client side. It is issued upon successful authentication and contains claims (pieces of information) about the user.
-    // Lifecycle: The JWT is usually stored in a cookie or local storage on the client side and is sent to the server with each request to verify the user's identity.
-
-    // Session:
-
-    // Purpose: The session object is used to store user data on the server side. It represents an active authenticated session for the user.
-    // Lifecycle: The session object is generated from the token when the user makes a request to the server and is often used to populate UI components with user data.
-
-    async session({ session, user, token }) {
+    async session({ session, token }) {
       if (token) {
-        session.user._id = token._id?.toString();
-        session.user.username = token.username;
-        session.user.email = token.email;
-        session.user.theme = token?.theme;
-        session.user.provider = token?.provider;
+        session.user = {
+          _id: token._id?.toString(),
+          username: token.username,
+          email: token.email,
+          theme: token?.theme,
+          provider: token?.provider,
+        };
       }
       return session;
     },
+
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id?.toString();
@@ -155,7 +144,6 @@ export const authOptions: NextAuthOptions = {
   },
 
   session: {
-    // to tell that we will be using jwt
     strategy: "jwt",
   },
 
