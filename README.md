@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Expensio - Expense Tracker
+A Next Expense Tracker with advanced features
 
-## Getting Started
+### Features Added ->
+1. Login using Google
+2. Secure Login and Password Encryption using NextAuth
+3. Set Monthly Income
+4. Add Expenses using friendly forms
+5. Add Monthly Expenses
+6. Add or Plan Trips with an amount
+7. Auto-update the Current Balance with each expense
+8. View Expenses and Trips in cool Tables
+9. Visualize your expenses and trips using graphs.
+10. Auto-refresh data with each change
+11. Mobile Responsive
 
-First, run the development server:
+### What I Learned ->
+1. Handling Google login in Next-Auth
+2. Working with big-content database
+3. Handling multiple route APIs together
+4. Importance of ZOD, how it makes errors easy
+5. Explore ShadCn in-depth, graphs, dialogs, tables, etc
+6. Using Sessions to identify the user
+7. Planning and Creating user models and schemas by own
+8. Advance user verification, route safety
+9. Retrieving big user data from the database and use in frontend
+10. Exploring the annoyingness and usability of Typescript
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Libraies/ Frameworks/ Packages ->
+1. TypeScript
+2. NextJs
+3. ShadCn Ui
+4. Tailwind CSS
+5. ReactJs
+6. React Hook Forms
+7. ZOD
+8. React-Hot-Toast
+9. BcryptJS
+10. Mongoose
+11. Recharts
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Languages Used ->
+1. TypeScript
