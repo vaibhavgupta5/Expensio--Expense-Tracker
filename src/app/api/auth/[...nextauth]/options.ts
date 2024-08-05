@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
         identifier: { label: "Username/Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials: any): Promise<any> {
         await connectDB();
 
         const user = await UserModel.findOne({
