@@ -46,31 +46,31 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account?.provider === "google") {
-        await connectDB();
-        const existingUser = await UserModel.findOne({ email: profile.email });
+    // async signIn({ user, account, profile }) {
+    //   if (account?.provider === "google") {
+    //     await connectDB();
+    //     const existingUser = await UserModel.findOne({ email: profile.email });
 
-        if (!existingUser) {
-          const newUser = new UserModel({
-            email: profile.email,
-            username: profile.name,
-            password: "test", // This should be handled securely
-            wishlist: [],
-            expenses: [],
-            incomeSources: [],
-            monthlyExpenses: [],
-            saveTarget: [],
-            theme: "light",
-            provider: "google",
-          });
+    //     if (!existingUser) {
+    //       const newUser = new UserModel({
+    //         email: profile.email,
+    //         username: profile.name,
+    //         password: "test", // This should be handled securely
+    //         wishlist: [],
+    //         expenses: [],
+    //         incomeSources: [],
+    //         monthlyExpenses: [],
+    //         saveTarget: [],
+    //         theme: "light",
+    //         provider: "google",
+    //       });
 
-          await newUser.save();
-        }
-      }
+    //       await newUser.save();
+    //     }
+    //   }
 
-      return true;
-    },
+    //   return true;
+    // },
 
     async session({ session, token }) {
       if (token) {
