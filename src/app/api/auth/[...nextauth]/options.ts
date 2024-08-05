@@ -14,104 +14,63 @@ export const authOptions: NextAuthOptions = {
         identifier: { label: "Username/Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials) {
         await connectDB();
 
-        try {
-          const user = await UserModel.findOne({
-            $or: [
-              { email: credentials.identifier },
-              { username: credentials.identifier },
-            ],
-          });
+        const user = await UserModel.findOne({
+          $or: [{ email: credentials.identifier }, { username: credentials.identifier }],
+        });
 
-          if (!user) {
-            throw new Error("No User Found");
-          }
+        if (!user) {
+          throw new Error("No user found");
+        }
 
-          if (user.provider === "google") {
-            throw new Error("Please sign in using Google");
-          }
+        if (user.provider === "google") {
+          throw new Error("Please sign in using Google");
+        }
 
-          const isPasswordCorrect = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
+        const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
 
-          if (isPasswordCorrect) {
-            return user;
-          } else {
-            throw new Error("Invalid Password");
-          }
-        } catch (error) {
-          console.error("Error during authentication:", error);
-          throw new Error("Authentication Failed");
+        if (isPasswordCorrect) {
+          return user;
+        } else {
+          throw new Error("Invalid password");
         }
       },
     }),
 
-  //   GoogleProvider({
-  //     clientId: process.env.GOOGLE_CLIENT_ID as string,
-  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-  //   }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
 
   callbacks: {
-    // async signIn({ user, account, profile }) {
-    //   await connectDB();
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        await connectDB();
+        const existingUser = await UserModel.findOne({ email: profile.email });
 
-    //   if (account?.provider === "google") {
-    //     try {
-    //       const existingUser = await UserModel.findOne({ email: profile?.email });
+        if (!existingUser) {
+          const newUser = new UserModel({
+            email: profile.email,
+            username: profile.name,
+            password: "test", // This should be handled securely
+            wishlist: [],
+            expenses: [],
+            incomeSources: [],
+            monthlyExpenses: [],
+            saveTarget: [],
+            theme: "light",
+            provider: "google",
+          });
 
-    //       if (!existingUser) {
-    //         const newUser = new UserModel({
-    //           email: profile?.email,
-    //           username: profile?.name,
-    //           password: "test", // This should be handled securely
-    //           wishlist: [
-    //             {
-    //               amount: 0,
-    //               name: "Demo Trip",
-    //               createdAt: Date.now(),
-    //               achieveTill: Date.now(),
-    //             },
-    //           ],
-    //           expenses: [
-    //             {
-    //               amount: 0,
-    //               title: "Demo Expense",
-    //               createdAt: Date.now(),
-    //             },
-    //           ],
-    //           incomeSources: [
-    //             {
-    //               amount: 50000,
-    //               createdAt: Date.now(),
-    //             },
-    //           ],
-    //           monthlyExpenses: [
-    //             {
-    //               amount: 0,
-    //               expenseSource: "Demo Rent",
-    //               createdAt: Date.now(),
-    //             },
-    //           ],
-    //           saveTarget: [],
-    //           theme: "light",
-    //           provider: "google",
-    //         });
+          await newUser.save();
+        }
+      }
 
-    //         await newUser.save();
-    //       }
-    //     } catch (error) {
-    //       console.error("Error saving user:", error);
-    //       return false;
-    //     }
-    //   }
-
-    //   return true;
-    // },
+      return true;
+    },
 
     async session({ session, token }) {
       if (token) {
@@ -147,5 +106,5 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
-  secret: process.env.NEXT_AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };
