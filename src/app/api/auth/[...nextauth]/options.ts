@@ -50,68 +50,68 @@ export const authOptions: NextAuthOptions = {
       },
     }),
 
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-  ],
+  //   GoogleProvider({
+  //     clientId: process.env.GOOGLE_CLIENT_ID as string,
+  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+  //   }),
+  // ],
 
   callbacks: {
-    async signIn({ user, account, profile }) {
-      await connectDB();
+    // async signIn({ user, account, profile }) {
+    //   await connectDB();
 
-      if (account?.provider === "google") {
-        try {
-          const existingUser = await UserModel.findOne({ email: profile?.email });
+    //   if (account?.provider === "google") {
+    //     try {
+    //       const existingUser = await UserModel.findOne({ email: profile?.email });
 
-          if (!existingUser) {
-            const newUser = new UserModel({
-              email: profile?.email,
-              username: profile?.name,
-              password: "test", // This should be handled securely
-              wishlist: [
-                {
-                  amount: 0,
-                  name: "Demo Trip",
-                  createdAt: Date.now(),
-                  achieveTill: Date.now(),
-                },
-              ],
-              expenses: [
-                {
-                  amount: 0,
-                  title: "Demo Expense",
-                  createdAt: Date.now(),
-                },
-              ],
-              incomeSources: [
-                {
-                  amount: 50000,
-                  createdAt: Date.now(),
-                },
-              ],
-              monthlyExpenses: [
-                {
-                  amount: 0,
-                  expenseSource: "Demo Rent",
-                  createdAt: Date.now(),
-                },
-              ],
-              saveTarget: [],
-              theme: "light",
-              provider: "google",
-            });
+    //       if (!existingUser) {
+    //         const newUser = new UserModel({
+    //           email: profile?.email,
+    //           username: profile?.name,
+    //           password: "test", // This should be handled securely
+    //           wishlist: [
+    //             {
+    //               amount: 0,
+    //               name: "Demo Trip",
+    //               createdAt: Date.now(),
+    //               achieveTill: Date.now(),
+    //             },
+    //           ],
+    //           expenses: [
+    //             {
+    //               amount: 0,
+    //               title: "Demo Expense",
+    //               createdAt: Date.now(),
+    //             },
+    //           ],
+    //           incomeSources: [
+    //             {
+    //               amount: 50000,
+    //               createdAt: Date.now(),
+    //             },
+    //           ],
+    //           monthlyExpenses: [
+    //             {
+    //               amount: 0,
+    //               expenseSource: "Demo Rent",
+    //               createdAt: Date.now(),
+    //             },
+    //           ],
+    //           saveTarget: [],
+    //           theme: "light",
+    //           provider: "google",
+    //         });
 
-            await newUser.save();
-          }
-        } catch (error) {
-          console.error("Error saving user:", error);
-          return false;
-        }
-      }
+    //         await newUser.save();
+    //       }
+    //     } catch (error) {
+    //       console.error("Error saving user:", error);
+    //       return false;
+    //     }
+    //   }
 
-      return true;
-    },
+    //   return true;
+    // },
 
     async session({ session, token }) {
       if (token) {
