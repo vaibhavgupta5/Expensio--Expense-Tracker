@@ -27,17 +27,10 @@ A Next Expense Tracker with advanced features
 10. Exploring the annoyingness and usability of Typescript
 
 ### Expensio Preview
-|  |  |
-|----------|----------|
-| ![Screenshot 2024-08-06 024839](https://github.com/user-attachments/assets/7a9a3b4d-41b7-484e-9bf4-2cdebdcab0ba) | ![Screenshot 2024-08-06 024904](https://github.com/user-attachments/assets/5e9c5a85-1fc2-4d85-94b3-d3ff2cedd5e0) |
-|![Screenshot 2024-08-06 025011](https://github.com/user-attachments/assets/5e945f23-3abe-4fed-880a-bbb7905198e2)| ![Screenshot 2024-08-06 025128](https://github.com/user-attachments/assets/3898cdb1-b38c-4e12-9414-3a0c543bcfa4)|
-| ![Screenshot 2024-08-06 025149](https://github.com/user-attachments/assets/b8f7cc36-4ebb-49e0-b62f-b127008bd1b8) | ![Screenshot 2024-08-06 025210](https://github.com/user-attachments/assets/492571f6-1b98-4462-a1b4-bc962c750333) |
-| ![Screenshot 2024-08-06 030157](https://github.com/user-attachments/assets/b99c37c2-1a46-4c2f-ab8f-e2a29a46d8be) | ![Screenshot 2024-08-06 025234](https://github.com/user-attachments/assets/e2ef10d8-db58-4ec7-ae4d-64856695fe8a) |
-
-### Check out Live ->
 https://github.com/user-attachments/assets/6bd3201b-ac28-4cc4-87d6-3ed86c294be1
 
-Not able to host it as... I don't have  Vercel Pro plan😓
+Why watch the video here when can try Live😓
+https://expensio-expense-tracker.vercel.app/
 
 
 ### Libraies/ Frameworks/ Packages ->
